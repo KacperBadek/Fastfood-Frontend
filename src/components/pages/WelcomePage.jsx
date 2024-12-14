@@ -15,12 +15,13 @@ export default function WelcomePage() {
 
     return (
         <div>
-            <h1>Welcome to the Home Page</h1>
-
-            <h2>Gdzie zjesz dzisiaj?</h2>
-            <DeliveryOptionButton handler={() => handleDeliveryOption("DINE_IN")} text="Na miejscu"/>
-            <DeliveryOptionButton handler={() => handleDeliveryOption("TAKEOUT")} text="Na wynos"/>
-            <DeliveryOptionButton handler={() => handleDeliveryOption("DELIVERY")} text="Dostawa"/>
+            <h1 className="text-3xl font-bold">Welcome to the Home Page</h1>
+            <div>
+                <h2>Gdzie zjesz dzisiaj?</h2>
+                <DeliveryOptionButton handler={() => handleDeliveryOption("DINE_IN")} text="Na miejscu"/>
+                <DeliveryOptionButton handler={() => handleDeliveryOption("TAKEOUT")} text="Na wynos"/>
+                <DeliveryOptionButton handler={() => handleDeliveryOption("DELIVERY")} text="Dostawa"/>
+            </div>
         </div>
     )
 }
