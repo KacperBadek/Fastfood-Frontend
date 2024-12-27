@@ -1,27 +1,68 @@
 import DeliveryOptionButton from "../DeliveryOptionButton.jsx";
 import {useNavigate} from "react-router-dom";
 import {GlobalContext} from "../../GlobalContext.jsx";
-import {useContext} from "react";
+import {useContext, useState} from "react";
+import DeliveryOptionForm from "../DeliveryOptionForm.jsx";
+
+const DeliveryOptions = {
+    DINE_IN: "DINE_IN",
+    TAKEOUT: "TAKEOUT",
+    DELIVERY: "DELIVERY",
+};
 
 export default function WelcomePage() {
-    const {setDeliveryOption} = useContext(GlobalContext);
+    const {state, dispatch} = useContext(GlobalContext);
+    const [showForm, setShowForm] = useState(false);
+    const {deliveryOption} = state;
     const navigate = useNavigate();
 
-    const handleDeliveryOption = (option) => {
-        setDeliveryOption(option);
 
-        navigate("/menu");
+    const handleDeliveryOption = (option) => {
+        dispatch({
+            type: "SET_DELIVERY_OPTION",
+            option: option
+        })
+
+        if (option === DeliveryOptions.TAKEOUT) {
+            navigate("/menu");
+        } else {
+            setShowForm(true);
+        }
     };
+
+    const handleSubmit = (values) => {
+        if (values.streetName || values.houseNumber || values.apartmentNumber) {
+            const deliveryAddress = `${values.streetName} ${values.houseNumber}/${values.apartmentNumber}`;
+            dispatch({
+                type: "SET_DELIVERY_ADDRESS",
+                deliveryAddress,
+            });
+        }
+
+        if (values.tableNumber) {
+            dispatch({
+                type: "SET_TABLE_NUMBER",
+                tableNumber: values.tableNumber,
+            });
+        }
+
+        setShowForm(false);
+        navigate("/menu");
+    }
 
     return (
         <div>
-            <h1 className="text-3xl font-bold">Welcome to the Home Page</h1>
+            <h1 className="text-3xl font-bold">Welcome to our restaurant!</h1>
             <div>
-                <h2>Gdzie zjesz dzisiaj?</h2>
-                <DeliveryOptionButton handler={() => handleDeliveryOption("DINE_IN")} text="Na miejscu"/>
-                <DeliveryOptionButton handler={() => handleDeliveryOption("TAKEOUT")} text="Na wynos"/>
-                <DeliveryOptionButton handler={() => handleDeliveryOption("DELIVERY")} text="Dostawa"/>
+                <h2>Where will you eat today?</h2>
+                <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.DINE_IN)} text="Dine in"/>
+                <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.TAKEOUT)} text="Takeout"/>
+                <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.DELIVERY)} text="Delivery"/>
             </div>
+            {showForm && (
+                <DeliveryOptionForm deliveryOptions={DeliveryOptions} deliveryOption={deliveryOption}
+                                    onSubmit={handleSubmit}/>
+            )}
         </div>
     )
 }

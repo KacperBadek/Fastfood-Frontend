@@ -3,7 +3,10 @@ import axios from "axios";
 
 const initialState = {
     products: [],
-    menuCategories: []
+    menuCategories: [],
+    deliveryOption: "",
+    tableNumber: "",
+    deliveryAddress: "",
 }
 
 function reducer(state, action) {
@@ -18,6 +21,21 @@ function reducer(state, action) {
                 ...state,
                 menuCategories: action.menuCategories,
             };
+        case "SET_DELIVERY_OPTION":
+            return {
+                ...state,
+                deliveryOption: action.option,
+            }
+        case "SET_TABLE_NUMBER":
+            return {
+                ...state,
+                tableNumber: action.tableNumber,
+            }
+        case "SET_DELIVERY_ADDRESS":
+            return {
+                ...state,
+                deliveryAddress: action.deliveryAddress,
+            }
         default:
             return state;
     }
@@ -29,7 +47,6 @@ export const GlobalContext = createContext();
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const [deliveryOption, setDeliveryOption] = useState(null);
 
     const fetchProductsAndCategories = async () => {
         try {
@@ -80,7 +97,11 @@ export const GlobalProvider = ({children}) => {
 
     const generatePayment = async (paymentData) => {//orderId, paymentMethod
         try {
-            await axios.post(API_URL + "/payments", paymentData);
+            await axios.post(API_URL + "/payments", paymentData, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
         } catch (error) {
             console.log("Generate payment error: ", error);
         }
@@ -107,8 +128,6 @@ export const GlobalProvider = ({children}) => {
         <GlobalContext.Provider value={{
             state,
             dispatch,
-            deliveryOption,
-            setDeliveryOption,
             fetchProductsAndCategories,
             fetchOrderSummary,
             createOrder,
