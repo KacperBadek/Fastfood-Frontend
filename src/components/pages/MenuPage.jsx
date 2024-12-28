@@ -2,12 +2,20 @@ import {useContext, useEffect, useState} from "react";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import Product from "../Product.jsx";
 import Sidebar from "../SideBar.jsx";
+import ProductModal from "../modals/ProductModal.jsx";
 
 export default function MenuPage() {
 
     const {state, dispatch, fetchProductsAndCategories} = useContext(GlobalContext);
     const {products, menuCategories} = state;
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [productModal, setProductModal] = useState(false);
+    
+    const toggleProductModal = (product) => {
+        setSelectedProduct(product);
+        setProductModal(!productModal);
+    };
 
     useEffect(() => {
         fetchProductsAndCategories();
@@ -29,7 +37,7 @@ export default function MenuPage() {
                     ) : (
                         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredProducts.map((product, index) => (
-                                <li key={index}>
+                                <li key={index} onClick={() => toggleProductModal(product)}>
                                     <Product productData={product}/>
                                 </li>
                             ))}
@@ -37,6 +45,9 @@ export default function MenuPage() {
                     )}
                 </div>
             </div>
+
+            {productModal && (<ProductModal product={selectedProduct} toggleModal={toggleProductModal}/>)}
+
         </div>
     )
 }
