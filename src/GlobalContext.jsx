@@ -115,7 +115,7 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    const fetchSales = async () => {
+    const fetchSalesData = async () => {
         try {
             const response = await axios.get(API_URL + "/admin/sales");
             const sales = response.data;
@@ -131,7 +131,9 @@ export const GlobalProvider = ({children}) => {
             fetchProductsAndCategories,
             fetchOrderSummary,
             createOrder,
-            generatePayment
+            generatePayment,
+            login,
+            fetchSalesData,
         }}>
             {children}
         </GlobalContext.Provider>
