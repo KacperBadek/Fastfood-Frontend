@@ -1,5 +1,4 @@
-export default function orderSummaryPage() {
-
+export default function OrderListPage() {
     return (
         <div>
 
