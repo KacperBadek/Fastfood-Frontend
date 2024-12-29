@@ -7,6 +7,7 @@ const initialState = {
     deliveryOption: "",
     tableNumber: "",
     deliveryAddress: "",
+    orderItems: [],
 }
 
 function reducer(state, action) {
@@ -35,6 +36,34 @@ function reducer(state, action) {
             return {
                 ...state,
                 deliveryAddress: action.deliveryAddress,
+            }
+        case "ADD_TO_ORDER": {
+            const itemIndex = state.orderItems.findIndex((item) => item.name === action.orderItem.name &&
+                JSON.stringify(item.selectedAddOns) === JSON.stringify(action.orderItem.selectedAddOns));
+
+            if (itemIndex !== -1) {
+                console.log("INDEX TAKIEGO SAMEGO PRODUKTU: ", itemIndex);
+                const updatedItems = [...state.orderItems];
+                console.log("ILOŚĆ PRZED DODANIEM: ", updatedItems[itemIndex].quantity)
+                updatedItems[itemIndex].quantity += action.orderItem.quantity;
+                console.log("ILOŚĆ PO DODANIU: ", updatedItems[itemIndex].quantity)
+
+                return {
+                    ...state,
+                    orderItems: updatedItems,
+                }
+            } else {
+                console.log("DUPA")
+                return {
+                    ...state,
+                    orderItems: [...state.orderItems, action.orderItem],
+                }
+            }
+        }
+        case"REMOVE_FROM_ORDER":
+            return {
+                ...state,
+                orderItems: state.orderItems.filter((item) => item !== action.orderItem),
             }
         default:
             return state;

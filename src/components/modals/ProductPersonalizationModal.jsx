@@ -1,10 +1,10 @@
 import {useState} from "react";
 import Modal from "./Modal.jsx";
 
-export default function ProductPersonalizationModal({product, toggleModal}) {
+export default function ProductPersonalizationModal({product, toggleModal, updateAddOns}) {
     const [quantities, setQuantities] = useState(
         product.addOns.reduce((acc, addon) => {
-            acc[addon.name] = 0;
+            acc[addon.name] = addon.quantity || 0;
             return acc;
         }, {})
     );
@@ -17,12 +17,12 @@ export default function ProductPersonalizationModal({product, toggleModal}) {
     };
 
     const handleSave = () => {
-        const selectedAddOns = product.addOns.map((addon) => ({
-            name: addon.name,
+        const updatedAddOns = product.addOns.map((addon) => ({
+            ...addon,
             quantity: quantities[addon.name],
             totalPrice: addon.additionalPrice * quantities[addon.name],
         }));
-        console.log("Selected Add-ons:", selectedAddOns);
+        updateAddOns(updatedAddOns);
         toggleModal();
     };
 

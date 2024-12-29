@@ -3,7 +3,7 @@ import {GlobalContext} from "../../GlobalContext.jsx";
 
 export default function SalesPage() {
     const {fetchSalesData} = useContext(GlobalContext);
-    const [salesData, setSalesData] = useState({});
+    const [salesData, setSalesData] = useState(null);
     const [error, setError] = useState("");
 
     const loadSalesData = async () => {
@@ -12,7 +12,7 @@ export default function SalesPage() {
             setSalesData(data);
             setError("");
         } catch (err) {
-            setError("Error.");
+            setError(err);
         }
     };
 

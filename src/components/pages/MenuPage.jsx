@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import Product from "../Product.jsx";
 import Sidebar from "../SideBar.jsx";
@@ -11,6 +12,7 @@ export default function MenuPage() {
     const [selectedType, setSelectedType] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [productModal, setProductModal] = useState(false);
+    const navigate = useNavigate();
     
     const toggleProductModal = (product) => {
         setSelectedProduct(product);
@@ -47,6 +49,7 @@ export default function MenuPage() {
             </div>
 
             {productModal && (<ProductModal product={selectedProduct} toggleModal={toggleProductModal}/>)}
+            <button onClick={() => navigate("/order")}>Go to your order</button>
 
         </div>
     )

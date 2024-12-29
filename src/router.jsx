@@ -28,7 +28,7 @@ const router = createBrowserRouter([
                 element: <OrderListPage/>,
             },
             {
-                path: "orderSummary",
+                path: "order-summary",
                 element: <OrderSummaryPage/>,
             },
             {
