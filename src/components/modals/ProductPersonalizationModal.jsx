@@ -1,10 +1,10 @@
 import {useState} from "react";
 import Modal from "./Modal.jsx";
 
-export default function ProductPersonalizationModal({product, toggleModal, updateAddOns}) {
+export default function ProductPersonalizationModal({addOns, toggleModal, updateAddOns}) {
     const [quantities, setQuantities] = useState(
-        product.addOns.reduce((acc, addon) => {
-            acc[addon.name] = addon.quantity || 0;
+        addOns.reduce((acc, addon) => {
+            acc[addon.name] = addon.quantity ?? addon.defaultQuantity;
             return acc;
         }, {})
     );
@@ -17,24 +17,32 @@ export default function ProductPersonalizationModal({product, toggleModal, updat
     };
 
     const handleSave = () => {
-        const updatedAddOns = product.addOns.map((addon) => ({
-            ...addon,
-            quantity: quantities[addon.name],
-            totalPrice: addon.additionalPrice * quantities[addon.name],
-        }));
+        const updatedAddOns = addOns.map((addon) => {
+            const defaultQuantity = addon.defaultQuantity;
+            const adjustedQuantity = Math.max(0, quantities[addon.name]);
+            const additionalQuantity = adjustedQuantity - defaultQuantity;
+
+            return {
+                ...addon,
+                quantity: adjustedQuantity,
+                totalPrice: additionalQuantity > 0
+                    ? addon.additionalPrice * additionalQuantity
+                    : 0,
+            };
+        });
+
         updateAddOns(updatedAddOns);
         toggleModal();
     };
 
     return (
-
         <Modal toggle={toggleModal}>
             <div>
                 <h2>Personalization</h2>
 
-                {product.addOns && product.addOns.length > 0 ? (
+                {addOns && addOns.length > 0 ? (
                     <ul>
-                        {product.addOns.map((addon, index) => (
+                        {addOns.map((addon, index) => (
                             <li key={index}>
                                 <div>
                                     <strong>{addon.name}</strong>
@@ -49,7 +57,9 @@ export default function ProductPersonalizationModal({product, toggleModal, updat
                                     />
                                     <p>
                                         Total: $
-                                        {(addon.additionalPrice * quantities[addon.name]).toFixed(2)}
+                                        {quantities[addon.name] > addon.defaultQuantity
+                                            ? ((quantities[addon.name] - addon.defaultQuantity) * addon.additionalPrice).toFixed(2)
+                                            : "0.00"}
                                     </p>
                                 </div>
                             </li>
@@ -64,3 +74,4 @@ export default function ProductPersonalizationModal({product, toggleModal, updat
         </Modal>
     );
 }
+

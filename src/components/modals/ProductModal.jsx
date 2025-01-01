@@ -25,19 +25,38 @@ export default function ProductModal({product, toggleModal}) {
     }
 
     const handleAddToOrder = () => {
-        const totalAddOnsPrice = personalizedAddOns.length > 0 ? personalizedAddOns.reduce((acc, addon) => acc + addon.totalPrice, 0) : 0;
+        const createDefaultAddOns = () =>
+            product.addOns.map((addon) => ({
+                ...addon,
+                quantity: addon.defaultQuantity,
+                totalPrice: 0,
+            }));
 
-        const productWithPersonalization = {
-            ...product,
-            selectedAddOns: personalizedAddOns.length > 0 ? personalizedAddOns : product.addOns,
-            quantity: quantity,
-            totalPrice: product.price * quantity + totalAddOnsPrice,
+        const calculateTotalPrice = (basePrice, addons, quantity) => {
+            const addonsTotalPrice = addons.reduce((acc, addon) => acc + addon.totalPrice, 0);
+            return (basePrice + addonsTotalPrice) * quantity;
+        };
+
+        const finalizeOrder = (selectedAddOns) => {
+            const productWithPersonalization = {
+                ...product,
+                selectedAddOns,
+                quantity,
+                totalPrice: calculateTotalPrice(product.price, selectedAddOns, quantity),
+            };
+
+            console.log(productWithPersonalization);
+            dispatch({type: "ADD_TO_ORDER", orderItem: productWithPersonalization});
+            //toggleModal();
+        };
+
+        if (!personalizedAddOns.length) {
+            const defaultAddOns = createDefaultAddOns();
+            finalizeOrder(defaultAddOns);
+        } else {
+            finalizeOrder(personalizedAddOns);
         }
-
-        console.log(productWithPersonalization)
-        dispatch({type: "ADD_TO_ORDER", orderItem: productWithPersonalization});
-        toggleModal();
-    }
+    };
 
 
     return (
@@ -55,7 +74,7 @@ export default function ProductModal({product, toggleModal}) {
 
             {detailsModal && (<ProductDetailsModal product={product} toggleModal={toggleDetailsModal}/>)}
             {personalizationModal && (
-                <ProductPersonalizationModal product={product} toggleModal={togglePersonalization}
+                <ProductPersonalizationModal addOns={product.addOns} toggleModal={togglePersonalization}
                                              updateAddOns={updateAddOns}/>)}
         </>
     );
