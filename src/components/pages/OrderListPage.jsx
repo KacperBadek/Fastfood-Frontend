@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import {useNavigate} from "react-router-dom";
+import OrderProduct from "../OrderProduct.jsx";
 
 export default function OrderListPage() {
     const {state, dispatch, createOrder} = useContext(GlobalContext);
@@ -36,8 +37,12 @@ export default function OrderListPage() {
         //navigate("/payment")
     }
 
-    const handleRemoveItem = (item) => {
-        dispatch({type: "REMOVE_FROM_ORDER", orderItem: item})
+    const handleStartOver = () => {
+        dispatch({type: "CLEAR_ORDER"})
+        dispatch({type: "SET_DELIVERY_OPTION", deliveryOption: ""})
+        dispatch({type: "SET_TABLE_NUMBER", tableNumber: ""})
+        dispatch({type: "SET_DELIVERY_ADDRESS", deliveryAddress: ""})
+        navigate("/");
     }
 
     return (
@@ -49,16 +54,14 @@ export default function OrderListPage() {
                 <ul>
                     {orderItems.map((item, index) => (
                         <li key={index}>
-                            <strong>{item.name}</strong>
-                            <p>Quantity: {item.quantity}</p>
-                            <p>Total Price: ${item.totalPrice.toFixed(2)}</p>
-                            <button onClick={() => handleRemoveItem(item)}>Remove</button>
+                            <OrderProduct index={index} product={item}/>
                         </li>
                     ))}
                 </ul>
             )}
 
             <button onClick={handleConfirmOrder}>Confirm order</button>
+            <button onClick={handleStartOver}>Start over</button>
         </div>
     )
 }
