@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import {useContext, useState} from "react";
 import DeliveryOptionForm from "../DeliveryOptionForm.jsx";
+import {startSession} from "../../http/session.jsx";
 
 const DeliveryOptions = {
     DINE_IN: "DINE_IN",
@@ -16,6 +17,14 @@ export default function WelcomePage() {
     const {deliveryOption} = state;
     const navigate = useNavigate();
 
+    const handleSession = async () => {
+        startSession().then(
+            (response) => {
+                sessionStorage.setItem("sessionId", response.data);
+                console.log("Session started with ID:", response.data);
+            }
+        ).catch((error) => {console.log("Failed to start session", error)})
+    }
 
     const handleDeliveryOption = (option) => {
         dispatch({
@@ -24,6 +33,7 @@ export default function WelcomePage() {
         })
 
         if (option === DeliveryOptions.TAKEOUT) {
+            handleSession();
             navigate("/menu");
         } else {
             setShowForm(true);
@@ -47,6 +57,7 @@ export default function WelcomePage() {
         }
 
         setShowForm(false);
+        handleSession();
         navigate("/menu");
     }
 

@@ -8,9 +8,9 @@ export default function PaymentPage() {
 
     const {generatePayment} = useContext(GlobalContext);
     const paymentOptions = [
-        { label: "Cash", value: "CASH" },
-        { label: "Credit Card", value: "CREDIT_CARD" },
-        { label: "Blik", value: "BLIK" },
+        {label: "Cash", value: "CASH"},
+        {label: "Credit Card", value: "CREDIT_CARD"},
+        {label: "Blik", value: "BLIK"},
     ];
 
 
@@ -35,7 +35,7 @@ export default function PaymentPage() {
     const handleSubmit = (values, {resetForm}) => {
         console.log(values.category)
         const paymentData = {
-            orderId: "676eab64c154fe500351611d",
+            sessionId: sessionStorage.getItem("sessionId"),
             paymentMethod: values.category
         }
         generatePayment(paymentData);

@@ -2,6 +2,7 @@ import {useContext} from "react";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import {useNavigate} from "react-router-dom";
 import OrderProduct from "../OrderProduct.jsx";
+import {getSessionInfo} from "../../http/session.jsx"
 
 export default function OrderListPage() {
     const {state, dispatch, createOrder} = useContext(GlobalContext);
@@ -21,11 +22,15 @@ export default function OrderListPage() {
     }
 
     const handleConfirmOrder = () => {
+        getSessionInfo().then((response) => {
+            console.log(response)
+        })
+
         const currentDate = new Date();
         const orderTime = currentDate.toISOString().split(".")[0];
 
         const newOrder = {
-            sessionId: "1",
+            sessionId: sessionStorage.getItem("sessionId"),
             items: prepareItems(),
             deliveryOption: deliveryOption,
             deliveryAddress: deliveryAddress,

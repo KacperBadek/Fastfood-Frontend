@@ -1,4 +1,4 @@
-import {createContext, useReducer, useState} from "react";
+import {createContext, useReducer} from "react";
 import axios from "axios";
 
 const initialState = {
@@ -143,25 +143,6 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    const fetchOrder = async (orderId) => {
-        try {
-            const response = await axios.get(API_URL + `/orders/${orderId}`);
-            const order = response.data;
-
-        } catch (error) {
-            console.log("Fetch order error: ", error);
-        }
-    }
-
-    const fetchOrderSummary = async (orderId) => {
-        try {
-            const response = await axios.get(API_URL + `/orders/${orderId}/summary`);
-            const orderSummary = response.data;
-        } catch (error) {
-            console.log("Fetch order summary error: ", error);
-        }
-    }
-
     const createOrder = async (newOrder) => {
         try {
             await axios.post(API_URL + "/orders/create", newOrder);
@@ -170,15 +151,7 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    const cancelOrder = async (orderId) => {
-        try {
-            await axios.put(API_URL + `/orders/${orderId}/cancel`);
-        } catch (error) {
-            console.log("Cancel order error: ", error);
-        }
-    }
-
-    const generatePayment = async (paymentData) => {//orderId, paymentMethod
+    const generatePayment = async (paymentData) => {
         try {
             await axios.post(API_URL + "/payments", paymentData, {
                 headers: {
@@ -212,7 +185,6 @@ export const GlobalProvider = ({children}) => {
             state,
             dispatch,
             fetchProductsAndCategories,
-            fetchOrderSummary,
             createOrder,
             generatePayment,
             login,

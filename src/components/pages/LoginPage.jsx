@@ -1,12 +1,12 @@
-import {useContext, useState} from "react";
-import {GlobalContext} from "../../GlobalContext.jsx";
+import {useState} from "react";
 import InputFieldFormik from "../InputFieldFormik.jsx";
 import {useNavigate} from "react-router-dom";
 import {Formik, Form} from "formik";
 import * as Yup from 'yup';
+import {login} from '../../http/api.jsx'
 
 export default function LoginPage() {
-    const {login} = useContext(GlobalContext);
+
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
