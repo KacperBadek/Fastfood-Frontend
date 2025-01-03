@@ -1,6 +1,6 @@
 import {ErrorMessage, Field} from "formik";
 
-export default function InputFieldFormik({label, name, type, options}) {
+export default function InputFieldFormik({label, name, type, options, handleFocus}) {
     return (
         <div>
             <label htmlFor={name}>{label}</label>
@@ -14,7 +14,7 @@ export default function InputFieldFormik({label, name, type, options}) {
                     ))}
                 </Field>
             ) : (
-                <Field name={name} type={type}/>
+                <Field name={name} type={type} onFocus={handleFocus}/>
             )}
             <ErrorMessage name={name} component="div" className="error"/>
         </div>

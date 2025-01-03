@@ -49,8 +49,10 @@ export default function LoginPage() {
                 {() => (
                     <Form>
                         <h1>Login</h1>
-                        <InputFieldFormik name="email" label="Email" type="text"/>
-                        <InputFieldFormik name="password" label="Password" type="password"/>
+                        <InputFieldFormik name="email" label="Email" type="text" handleFocus={() => setErrorMessage("")}/>
+                        <InputFieldFormik name="password" label="Password" type="password" handleFocus={() => setErrorMessage("")}/>
+                        {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+
                         <button type="submit">Login</button>
                     </Form>
                 )}

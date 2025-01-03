@@ -15,7 +15,7 @@ export async function createOrder(newOrder) {
 }
 
 export async function cancelOrder() {
-    return await axios.put(API_URL + `/orders/cancel`, {},{withCredentials: true});
+    return await axios.put(API_URL + `/orders/cancel`, {}, {withCredentials: true});
 }
 
 export async function generatePayment(paymentData) {
@@ -24,6 +24,10 @@ export async function generatePayment(paymentData) {
 
 export async function login(userData) {
     return await axios.post(API_URL + "/users/login", userData, {withCredentials: true});
+}
+
+export async function logout() {
+    return await axios.post(API_URL + "/users/logout", {}, {withCredentials: true});
 }
 
 export async function fetchSalesData() {
