@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useCallback, useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import Product from "../Product.jsx";
@@ -14,10 +14,11 @@ export default function MenuPage() {
     const [productModal, setProductModal] = useState(false);
     const navigate = useNavigate();
 
-    const toggleProductModal = (product) => {
+    const toggleProductModal = useCallback((product) => {
         setSelectedProduct(product);
-        setProductModal(!productModal);
-    };
+        setProductModal((prev) => !prev);
+    }, []);
+
 
     const filteredProducts = selectedType
         ? products.filter((product) => product.type === selectedType)

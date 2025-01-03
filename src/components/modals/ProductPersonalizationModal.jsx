@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {generateUpdatedAddOns} from "../../utils/AddOnUtils.jsx"
 import Modal from "./Modal.jsx";
 import AddOn from "../AddOn.jsx";
@@ -11,15 +11,15 @@ export default function ProductPersonalizationModal({addOns, toggleModal, update
         }, {})
     );
 
-    const handleQuantityChange = (addonName, value) => {
-        setQuantities({
-            ...quantities,
+    const handleQuantityChange = useCallback((addonName, value) => {
+        setQuantities((prev) => ({
+            ...prev,
             [addonName]: Math.max(0, value),
-        });
-    };
+        }));
+    }, []);
 
     const handleSave = () => {
-       const updatedAddOns = generateUpdatedAddOns(addOns, quantities);
+        const updatedAddOns = generateUpdatedAddOns(addOns, quantities);
         updateAddOns(updatedAddOns);
         toggleModal();
     };

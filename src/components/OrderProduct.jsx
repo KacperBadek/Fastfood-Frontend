@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useCallback, useContext, useState} from "react";
 import {GlobalContext} from "../GlobalContext.jsx";
 import ProductDetailsModal from "./modals/ProductDetailsModal.jsx";
 import ProductPersonalizationModal from "./modals/ProductPersonalizationModal.jsx";
@@ -9,13 +9,13 @@ export default function OrderProduct({index, product}) {
     const [detailsModal, setDetailsModal] = useState(false);
     const [personalizationModal, setPersonalizationModal] = useState(false);
 
-    const toggleDetailsModal = (product) => {
-        setDetailsModal(!detailsModal);
-    };
+    const toggleDetailsModal = useCallback(() => {
+        setDetailsModal((prev) => !prev);
+    }, []);
 
-    const togglePersonalization = (product) => {
-        setPersonalizationModal(!personalizationModal);
-    };
+    const togglePersonalization = useCallback(() => {
+        setPersonalizationModal(prev => !prev)
+    }, []);
 
     const updateAddOns = (updatedAddOns) => {
         dispatch({
@@ -48,7 +48,7 @@ export default function OrderProduct({index, product}) {
                     value={product.quantity}
                     onChange={(e) => handleQuantityUpdate(e.target.value)}
                 />
-                <p>Total Price: ${product.totalPrice.toFixed(2)}</p>
+                <p>Price: ${product.totalPrice.toFixed(2)}</p>
                 <button onClick={togglePersonalization}>Personalise</button>
                 <button onClick={toggleDetailsModal}>Info</button>
                 <button onClick={() => handleRemoveItem(product)}>Remove</button>

@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useMemo} from "react";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import {useNavigate} from "react-router-dom";
 import OrderProduct from "../OrderProduct.jsx";
@@ -7,11 +7,15 @@ import {useSessionUtils} from "../../utils/SessionUtils.jsx"
 import {createOrderObject} from "../../utils/OrderUtils";
 import {createOrder} from "../../http/api.jsx";
 
-export default function OrderListPage() {
+export default function OrderSummaryPage() {
     const {state} = useContext(GlobalContext);
     const {restartSession} = useSessionUtils();
     const {orderItems, deliveryOption, tableNumber, deliveryAddress} = state;
     const navigate = useNavigate();
+
+    const countTotalPrice = useMemo(() => {
+        return orderItems.reduce((total, item) => total + item.totalPrice, 0).toFixed(2);
+    }, [orderItems]);
 
     const handleConfirmOrder = async () => {
         getSessionInfo().then((response) => {
@@ -53,6 +57,10 @@ export default function OrderListPage() {
                     ))}
                 </ul>
             )}
+
+            <div>
+                Total price: {countTotalPrice}$
+            </div>
 
             <button onClick={handleConfirmOrder}>Confirm order</button>
             <button onClick={handleStartOver}>Start over</button>

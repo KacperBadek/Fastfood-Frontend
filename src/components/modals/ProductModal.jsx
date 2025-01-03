@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useCallback} from "react";
 import ProductDetailsModal from "./ProductDetailsModal.jsx";
 import ProductPersonalizationModal from "./ProductPersonalizationModal.jsx";
 import Modal from "./Modal.jsx";
@@ -13,17 +13,17 @@ export default function ProductModal({product, toggleModal}) {
     const [detailsModal, setDetailsModal] = useState(false);
     const [personalizationModal, setPersonalizationModal] = useState(false);
 
-    const toggleDetailsModal = (product) => {
-        setDetailsModal(!detailsModal);
-    };
+    const toggleDetailsModal = useCallback(() => {
+        setDetailsModal((prev) => !prev);
+    }, []);
 
-    const togglePersonalization = (product) => {
-        setPersonalizationModal(!personalizationModal);
-    };
+    const togglePersonalization = useCallback(() => {
+        setPersonalizationModal(prev => !prev)
+    }, []);
 
-    const updateAddOns = (updatedAddOns) => {
+    const updateAddOns = useCallback((updatedAddOns) => {
         setPersonalizedAddOns(updatedAddOns);
-    }
+    }, []);
 
     const handleAddToOrder = () => {
         if (!personalizedAddOns.length) {
