@@ -16,7 +16,7 @@ export default function OrderConfirmationPage() {
     }
 
     useEffect(() => {
-        fetchOrderConfirmation(sessionStorage.getItem("sessionId"))
+        fetchOrderConfirmation()
             .then((data) => {
                 setOrderDetails(data);
             })

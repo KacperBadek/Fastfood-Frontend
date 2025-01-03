@@ -1,16 +1,15 @@
 import axios from "axios";
-axios.defaults.withCredentials = true;
 
 const API_URL = "http://localhost:8080/session";
 
 export async function startSession() {
-    return await axios.post(API_URL + "/start");
+    return await axios.post(API_URL + "/start", {},{withCredentials: true});
 }
 
 export async function endSession() {
-    return await axios.post(API_URL + "/end");
+    return await axios.post(API_URL + "/end", {},{withCredentials: true});
 }
 
 export async function getSessionInfo() {
-    return (await axios.get(API_URL)).data;
+    return (await axios.get(API_URL, {withCredentials: true})).data;
 }

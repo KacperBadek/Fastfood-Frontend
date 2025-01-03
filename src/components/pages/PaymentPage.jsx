@@ -36,7 +36,6 @@ export default function PaymentPage() {
 
     const handleSubmit = async (values, {resetForm}) => {
         const paymentData = {
-            sessionId: sessionStorage.getItem("sessionId"),
             paymentMethod: values.category
         }
 
@@ -51,7 +50,7 @@ export default function PaymentPage() {
 
     const handleCancel = async () => {
         try {
-            await cancelOrder(sessionStorage.getItem("sessionId"));
+            await cancelOrder();
             restartSession();
         } catch (error) {
             console.log("Can't cancel order", error);

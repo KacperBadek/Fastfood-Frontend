@@ -1,5 +1,5 @@
 import {useEffect, useLayoutEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 // const SESSION_TIMEOUT = 15 * 60 * 1000;
 const SESSION_TIMEOUT = 10 * 1000;
@@ -8,14 +8,7 @@ export default function SessionManager() {
     const navigate = useNavigate();
 
     useLayoutEffect(() => {
-        const sessionId = sessionStorage.getItem("sessionId");
-
-        if (!sessionId) {
-            console.log("No active session. SessionManager is not running.");
-            return;
-        }
-
-        console.log("SessionManager initialized for sessionId:", sessionId);
+        console.log("SessionManager initialized for sessionId:", document.cookie);
         let sessionTimeout;
 
         const resetSessionTimeout = () => {

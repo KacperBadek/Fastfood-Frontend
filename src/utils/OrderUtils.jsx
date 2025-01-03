@@ -19,7 +19,6 @@ export const createOrderObject = ({
     const orderTime = currentDate.toISOString().split(".")[0];
 
     return {
-        sessionId: sessionStorage.getItem("sessionId"),
         items: prepareItems(orderItems),
         deliveryOption: deliveryOption,
         deliveryAddress: deliveryAddress,

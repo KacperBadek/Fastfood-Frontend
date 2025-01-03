@@ -17,13 +17,12 @@ export default function WelcomePage() {
     const {deliveryOption} = state;
     const navigate = useNavigate();
 
-    const handleSession = async () => {
-        startSession().then(
-            (response) => {
-                sessionStorage.setItem("sessionId", response.data);
-                console.log("Session started with ID:", response.data);
-            }
-        ).catch((error) => {console.log("Failed to start session", error)})
+    const handleSession = () => {
+        startSession()
+            .then()
+            .catch((error) => {
+                console.log("Failed to start session", error)
+            })
     }
 
     const handleDeliveryOption = (option) => {
