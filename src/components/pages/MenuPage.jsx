@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import Product from "../Product.jsx";
@@ -7,21 +7,17 @@ import ProductModal from "../modals/ProductModal.jsx";
 
 export default function MenuPage() {
 
-    const {state, dispatch, fetchProductsAndCategories} = useContext(GlobalContext);
+    const {state} = useContext(GlobalContext);
     const {products, menuCategories} = state;
     const [selectedType, setSelectedType] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [productModal, setProductModal] = useState(false);
     const navigate = useNavigate();
-    
+
     const toggleProductModal = (product) => {
         setSelectedProduct(product);
         setProductModal(!productModal);
     };
-
-    useEffect(() => {
-        fetchProductsAndCategories();
-    }, []);
 
     const filteredProducts = selectedType
         ? products.filter((product) => product.type === selectedType)

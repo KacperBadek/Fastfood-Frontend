@@ -1,15 +1,14 @@
-import {useContext} from "react";
 import InputFieldFormik from "../InputFieldFormik.jsx";
-import {GlobalContext} from "../../GlobalContext.jsx";
 import {Formik, Form} from "formik";
 import * as Yup from 'yup';
 import {useSessionUtils} from "../../utils/SessionUtils.jsx"
-import {cancelOrder} from "../../http/api.jsx";
+import {generatePayment, cancelOrder} from "../../http/api.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function PaymentPage() {
 
-    const {generatePayment} = useContext(GlobalContext);
     const {restartSession} = useSessionUtils();
+    const navigate = useNavigate();
 
     const paymentOptions = [
         {label: "Cash", value: "CASH"},
@@ -35,14 +34,19 @@ export default function PaymentPage() {
         }),
     })
 
-    const handleSubmit = (values, {resetForm}) => {
-        console.log(values.category)
+    const handleSubmit = async (values, {resetForm}) => {
         const paymentData = {
             sessionId: sessionStorage.getItem("sessionId"),
             paymentMethod: values.category
         }
-        generatePayment(paymentData);
-        resetForm();
+
+        try {
+            await generatePayment(paymentData);
+            resetForm();
+            navigate("/order-confirmation")
+        } catch (error) {
+            console.log("Payment error", error)
+        }
     }
 
     const handleCancel = async () => {

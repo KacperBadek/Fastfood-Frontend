@@ -4,9 +4,10 @@ import {useNavigate} from "react-router-dom";
 import OrderProduct from "../OrderProduct.jsx";
 import {getSessionInfo} from "../../http/session.jsx"
 import {useSessionUtils} from "../../utils/SessionUtils.jsx"
+import {createOrder} from "../../http/api.jsx";
 
 export default function OrderListPage() {
-    const {state, createOrder} = useContext(GlobalContext);
+    const {state} = useContext(GlobalContext);
     const {restartSession} = useSessionUtils();
     const {orderItems, deliveryOption, tableNumber, deliveryAddress} = state;
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function OrderListPage() {
         }));
     }
 
-    const handleConfirmOrder = () => {
+    const handleConfirmOrder = async () => {
         getSessionInfo().then((response) => {
             console.log(response)
         })
@@ -40,8 +41,13 @@ export default function OrderListPage() {
             orderTime: orderTime
         }
         console.log(newOrder);
-        createOrder(newOrder);
-        navigate("/payment")
+
+        try {
+            await createOrder(newOrder);
+            navigate("/payment")
+        } catch (error) {
+            console.log("Error submiting order:", error)
+        }
     }
 
     const handleStartOver = () => {

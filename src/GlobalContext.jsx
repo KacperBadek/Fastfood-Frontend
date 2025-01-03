@@ -1,5 +1,4 @@
 import {createContext, useReducer} from "react";
-import axios from "axios";
 
 const initialState = {
     products: [],
@@ -87,7 +86,7 @@ function reducer(state, action) {
             };
         }
         case "UPDATE_ADD_ON": {
-            const { index, updatedAddOns } = action;
+            const {index, updatedAddOns} = action;
 
             const updatedItems = state.orderItems.map((item, itemIndex) => {
                 if (itemIndex === index) {
@@ -124,71 +123,15 @@ function reducer(state, action) {
     }
 }
 
-const API_URL = "http://localhost:8080";
-
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const fetchProductsAndCategories = async () => {
-        try {
-            const response = await axios.get(API_URL + "/menus");
-            const {products, productTypes} = response.data;
-
-            dispatch({type: "SET_PRODUCTS", products: products});
-            dispatch({type: "SET_CATEGORIES", menuCategories: productTypes});
-        } catch (error) {
-            console.log("Nie udało się załadować produktów", error);
-        }
-    }
-
-    const createOrder = async (newOrder) => {
-        try {
-            await axios.post(API_URL + "/orders/create", newOrder);
-        } catch (error) {
-            console.log("Create order error: ", error);
-        }
-    }
-
-    const generatePayment = async (paymentData) => {
-        try {
-            await axios.post(API_URL + "/payments", paymentData, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-        } catch (error) {
-            console.log("Generate payment error: ", error);
-        }
-    }
-
-    const login = async (userData) => {
-        try {
-            await axios.post(API_URL + "/users/login", userData);
-        } catch (error) {
-            console.log("Login error: ", error);
-        }
-    }
-
-    const fetchSalesData = async () => {
-        try {
-            const response = await axios.get(API_URL + "/admin/sales");
-            const sales = response.data;
-        } catch (error) {
-            console.log("Sales error: ", error);
-        }
-    }
-
     return (
         <GlobalContext.Provider value={{
             state,
             dispatch,
-            fetchProductsAndCategories,
-            createOrder,
-            generatePayment,
-            login,
-            fetchSalesData,
         }}>
             {children}
         </GlobalContext.Provider>
