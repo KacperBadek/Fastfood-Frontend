@@ -3,9 +3,11 @@ import {GlobalContext} from "../../GlobalContext.jsx";
 import {useNavigate} from "react-router-dom";
 import OrderProduct from "../OrderProduct.jsx";
 import {getSessionInfo} from "../../http/session.jsx"
+import {useSessionUtils} from "../../utils/SessionUtils.jsx"
 
 export default function OrderListPage() {
-    const {state, dispatch, createOrder} = useContext(GlobalContext);
+    const {state, createOrder} = useContext(GlobalContext);
+    const {restartSession} = useSessionUtils();
     const {orderItems, deliveryOption, tableNumber, deliveryAddress} = state;
     const navigate = useNavigate();
 
@@ -39,15 +41,11 @@ export default function OrderListPage() {
         }
         console.log(newOrder);
         createOrder(newOrder);
-        //navigate("/payment")
+        navigate("/payment")
     }
 
     const handleStartOver = () => {
-        dispatch({type: "CLEAR_ORDER"})
-        dispatch({type: "SET_DELIVERY_OPTION", deliveryOption: ""})
-        dispatch({type: "SET_TABLE_NUMBER", tableNumber: ""})
-        dispatch({type: "SET_DELIVERY_ADDRESS", deliveryAddress: ""})
-        navigate("/");
+        restartSession();
     }
 
     return (

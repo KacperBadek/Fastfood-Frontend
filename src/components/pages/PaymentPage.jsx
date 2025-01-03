@@ -3,16 +3,19 @@ import InputFieldFormik from "../InputFieldFormik.jsx";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import {Formik, Form} from "formik";
 import * as Yup from 'yup';
+import {useSessionUtils} from "../../utils/SessionUtils.jsx"
+import {cancelOrder} from "../../http/api.jsx";
 
 export default function PaymentPage() {
 
     const {generatePayment} = useContext(GlobalContext);
+    const {restartSession} = useSessionUtils();
+
     const paymentOptions = [
         {label: "Cash", value: "CASH"},
         {label: "Credit Card", value: "CREDIT_CARD"},
         {label: "Blik", value: "BLIK"},
     ];
-
 
     const validationSchema = Yup.object({
         category: Yup.string().required("Payment type is required"),
@@ -42,6 +45,15 @@ export default function PaymentPage() {
         resetForm();
     }
 
+    const handleCancel = async () => {
+        try {
+            await cancelOrder(sessionStorage.getItem("sessionId"));
+            restartSession();
+        } catch (error) {
+            console.log("Can't cancel order", error);
+        }
+    }
+
     return (
         <div>
             <h1>Payment</h1>
@@ -68,6 +80,7 @@ export default function PaymentPage() {
                         )}
 
                         <button type="Submit">Confirm</button>
+                        <button type="button" onClick={handleCancel}>Cancel Order</button>
                     </Form>
                 )}
             </Formik>

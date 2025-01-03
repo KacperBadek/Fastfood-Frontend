@@ -2,17 +2,17 @@ import {useEffect, useRef, useState} from "react";
 import {useReactToPrint} from "react-to-print";
 import {fetchOrderConfirmation} from "../../http/api.jsx";
 import OrderConfirmation from "../OrderConfirmation.jsx";
-import {useNavigate} from "react-router-dom";
+import {useSessionUtils} from "../../utils/SessionUtils.jsx"
 
 export default function OrderConfirmationPage() {
     const [orderDetails, setOrderDetails] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const contentRef = useRef();
     const reactToPrintFn = useReactToPrint({contentRef});
-    const navigate = useNavigate();
+    const {restartSession} = useSessionUtils();
 
     const handleFinish = () => {
-        navigate("/")
+        restartSession();
     }
 
     useEffect(() => {
