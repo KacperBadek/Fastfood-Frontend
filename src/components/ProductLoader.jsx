@@ -9,8 +9,8 @@ export default function ProductLoader() {
     useEffect(() => {
         const loadProducts = async () => {
             try {
-                const storedProducts = JSON.parse(sessionStorage.getItem("products"));
-                const storedCategories = JSON.parse(sessionStorage.getItem("categories"));
+                const storedProducts = JSON.parse(localStorage.getItem("products"));
+                const storedCategories = JSON.parse(localStorage.getItem("categories"));
 
                 if (storedProducts && storedCategories) {
                     dispatch({type: "SET_PRODUCTS", products: storedProducts});
@@ -19,8 +19,8 @@ export default function ProductLoader() {
                     const {products, productTypes} = await fetchProductsAndCategories();
                     dispatch({type: "SET_PRODUCTS", products});
                     dispatch({type: "SET_CATEGORIES", menuCategories: productTypes});
-                    sessionStorage.setItem("products", JSON.stringify(products));
-                    sessionStorage.setItem("categories", JSON.stringify(productTypes));
+                    localStorage.setItem("products", JSON.stringify(products));
+                    localStorage.setItem("categories", JSON.stringify(productTypes));
                 }
             } catch (error) {
                 console.error("Failed to load products and categories:", error);

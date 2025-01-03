@@ -1,4 +1,5 @@
 import {createContext, useReducer} from "react";
+import {calculateTotalPrice} from "./utils/ProductUtils.jsx"
 
 const initialState = {
     products: [],
@@ -65,11 +66,6 @@ function reducer(state, action) {
                 if (index === action.index) {
                     const updatedQuantity = Math.max(1, action.quantity);
 
-                    const calculateTotalPrice = (basePrice, addons, quantity) => {
-                        const addonsTotalPrice = addons.reduce((acc, addon) => acc + addon.totalPrice, 0);
-                        return (basePrice + addonsTotalPrice) * quantity;
-                    };
-
                     const updatedTotalPrice = calculateTotalPrice(item.price, item.selectedAddOns, updatedQuantity);
                     return {
                         ...item,
@@ -90,12 +86,6 @@ function reducer(state, action) {
 
             const updatedItems = state.orderItems.map((item, itemIndex) => {
                 if (itemIndex === index) {
-
-                    const calculateTotalPrice = (basePrice, addons, quantity) => {
-                        const addonsTotalPrice = addons.reduce((acc, addon) => acc + addon.totalPrice, 0);
-                        return (basePrice + addonsTotalPrice) * quantity;
-                    };
-
                     const updatedTotalPrice = calculateTotalPrice(item.price, updatedAddOns, item.quantity);
 
                     return {

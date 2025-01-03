@@ -2,11 +2,12 @@ import {useState, useContext} from "react";
 import ProductDetailsModal from "./ProductDetailsModal.jsx";
 import ProductPersonalizationModal from "./ProductPersonalizationModal.jsx";
 import Modal from "./Modal.jsx";
+import {createDefaultAddOns, calculateTotalPrice, finalizeOrder} from '../../utils/ProductUtils.jsx';
 import {GlobalContext} from "../../GlobalContext.jsx";
 
 export default function ProductModal({product, toggleModal}) {
 
-    const {state, dispatch} = useContext(GlobalContext);
+    const {dispatch} = useContext(GlobalContext);
     const [quantity, setQuantity] = useState(1);
     const [personalizedAddOns, setPersonalizedAddOns] = useState([]);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -25,39 +26,13 @@ export default function ProductModal({product, toggleModal}) {
     }
 
     const handleAddToOrder = () => {
-        const createDefaultAddOns = () =>
-            product.addOns.map((addon) => ({
-                ...addon,
-                quantity: addon.defaultQuantity,
-                totalPrice: 0,
-            }));
-
-        const calculateTotalPrice = (basePrice, addons, quantity) => {
-            const addonsTotalPrice = addons.reduce((acc, addon) => acc + addon.totalPrice, 0);
-            return (basePrice + addonsTotalPrice) * quantity;
-        };
-
-        const finalizeOrder = (selectedAddOns) => {
-            const productWithPersonalization = {
-                ...product,
-                selectedAddOns,
-                quantity,
-                totalPrice: calculateTotalPrice(product.price, selectedAddOns, quantity),
-            };
-
-            console.log(productWithPersonalization);
-            dispatch({type: "ADD_TO_ORDER", orderItem: productWithPersonalization});
-            //toggleModal();
-        };
-
         if (!personalizedAddOns.length) {
-            const defaultAddOns = createDefaultAddOns();
-            finalizeOrder(defaultAddOns);
+            const defaultAddOns = createDefaultAddOns(product);
+            finalizeOrder(product, defaultAddOns, quantity, calculateTotalPrice, dispatch);
         } else {
-            finalizeOrder(personalizedAddOns);
+            finalizeOrder(product, personalizedAddOns, quantity, calculateTotalPrice, dispatch);
         }
     };
-
 
     return (
         <>
