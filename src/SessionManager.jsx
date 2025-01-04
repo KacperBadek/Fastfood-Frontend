@@ -1,4 +1,4 @@
-import {useEffect, useLayoutEffect} from "react";
+import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
 // const SESSION_TIMEOUT = 15 * 60 * 1000;
@@ -7,7 +7,7 @@ const SESSION_TIMEOUT = 10 * 1000;
 export default function SessionManager() {
     const navigate = useNavigate();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         console.log("SessionManager initialized for sessionId:", document.cookie);
         let sessionTimeout;
 

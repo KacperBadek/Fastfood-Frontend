@@ -1,13 +1,19 @@
 import InputFieldFormik from "../InputFieldFormik.jsx";
 import {Formik, Form} from "formik";
 import * as Yup from 'yup';
+import {createOrderObject} from "../../utils/OrderUtils";
 import {useSessionUtils} from "../../utils/SessionUtils.jsx"
-import {generatePayment, cancelOrder} from "../../http/api.jsx";
+import {generatePayment, createOrder} from "../../http/api.jsx";
 import {useNavigate} from "react-router-dom";
+import {useContext, useState} from "react";
+import {GlobalContext} from "../../GlobalContext.jsx";
 
 export default function PaymentPage() {
 
-    const {restartSession} = useSessionUtils();
+    const {state} = useContext(GlobalContext);
+    const {orderItems, deliveryOption, tableNumber, deliveryAddress} = state;
+    const {restartSessionWithNavigate} = useSessionUtils();
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const paymentOptions = [
@@ -38,24 +44,34 @@ export default function PaymentPage() {
         const paymentData = {
             paymentMethod: values.category
         }
+        const newOrder = createOrderObject({
+            deliveryOption,
+            deliveryAddress,
+            tableNumber,
+            orderItems,
+        });
+        console.log(newOrder);
 
         try {
+            await createOrder(newOrder);
             await generatePayment(paymentData);
             resetForm();
             navigate("/order-confirmation")
         } catch (error) {
             console.log("Payment error", error)
+            setErrorMessage("Oops, there was an error. Try again later.");
         }
     }
 
     const handleCancel = async () => {
         try {
-            await cancelOrder();
-            restartSession();
+            await restartSessionWithNavigate();
         } catch (error) {
             console.log("Can't cancel order", error);
         }
     }
+
+    if (errorMessage) return <div>{errorMessage}</div>;
 
     return (
         <div>

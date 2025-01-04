@@ -7,15 +7,16 @@ export function useSessionUtils() {
     const {dispatch} = useContext(GlobalContext);
     const navigate = useNavigate();
 
-    const restartSession = () => {
+    const restartSession = async () => {
         dispatch({type: "CLEAR_ORDER"});
-        dispatch({type: "SET_DELIVERY_OPTION", deliveryOption: ""});
-        dispatch({type: "SET_TABLE_NUMBER", tableNumber: ""});
-        dispatch({type: "SET_DELIVERY_ADDRESS", deliveryAddress: ""});
-        sessionStorage.removeItem("sessionId");
-        endSession();
-        navigate("/");
+        dispatch({type: "CLEAR_FORM_DATA"})
+        await endSession();
     };
 
-    return {restartSession};
+    const restartSessionWithNavigate = async () => {
+        await restartSession();
+        navigate("/");
+    }
+
+    return {restartSession, restartSessionWithNavigate};
 }

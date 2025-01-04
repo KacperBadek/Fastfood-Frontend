@@ -32,6 +32,7 @@ export default function WelcomePage() {
         })
 
         if (option === DeliveryOptions.TAKEOUT) {
+            dispatch({type: "CLEAR_TABLE_NUMBER"}, {type: "CLEAR_DELIVERY_ADDRESS"})
             handleSession();
             navigate("/menu");
         } else {
@@ -45,14 +46,14 @@ export default function WelcomePage() {
             dispatch({
                 type: "SET_DELIVERY_ADDRESS",
                 deliveryAddress,
-            });
+            }, {type: "CLEAR_TABLE_NUMBER"});
         }
 
         if (values.tableNumber) {
             dispatch({
                 type: "SET_TABLE_NUMBER",
                 tableNumber: values.tableNumber,
-            });
+            }, {type: "CLEAR_DELIVERY_ADDRESS"});
         }
 
         setShowForm(false);

@@ -1,13 +1,26 @@
 import {createContext, useReducer} from "react";
 import {calculateTotalPrice} from "./utils/ProductUtils.jsx"
 
+function saveOrderItemsToSessionStorage(orderItems) {
+    sessionStorage.setItem("orderItems", JSON.stringify(orderItems));
+}
+
+function saveToSessionStorage(key, value) {
+    sessionStorage.setItem(key, JSON.stringify(value));
+}
+
+function removeFromSessionStorage(key) {
+    sessionStorage.removeItem(key);
+}
+
+
 const initialState = {
     products: [],
     menuCategories: [],
-    deliveryOption: "",
-    tableNumber: "",
-    deliveryAddress: "",
-    orderItems: [],
+    deliveryOption: JSON.parse(sessionStorage.getItem("deliveryOption")) || "",
+    tableNumber: JSON.parse(sessionStorage.getItem("tableNumber")) || "",
+    deliveryAddress: JSON.parse(sessionStorage.getItem("deliveryAddress")) || "",
+    orderItems: JSON.parse(sessionStorage.getItem("orderItems")) || [],
 }
 
 function reducer(state, action) {
@@ -23,43 +36,73 @@ function reducer(state, action) {
                 menuCategories: action.menuCategories,
             };
         case "SET_DELIVERY_OPTION":
+            saveToSessionStorage("deliveryOption", action.option);
             return {
                 ...state,
                 deliveryOption: action.option,
-            }
+            };
         case "SET_TABLE_NUMBER":
+            saveToSessionStorage("tableNumber", action.tableNumber);
             return {
                 ...state,
                 tableNumber: action.tableNumber,
             }
+        case "CLEAR_TABLE_NUMBER":
+            removeFromSessionStorage("tableNumber");
+            return {
+                ...state,
+                tableNumber: "",
+            }
         case "SET_DELIVERY_ADDRESS":
+            saveToSessionStorage("deliveryAddress", action.deliveryAddress);
             return {
                 ...state,
                 deliveryAddress: action.deliveryAddress,
             }
-        case "ADD_TO_ORDER": {
-            const itemIndex = state.orderItems.findIndex((item) => item.name === action.orderItem.name &&
-                JSON.stringify(item.selectedAddOns) === JSON.stringify(action.orderItem.selectedAddOns));
-
-            if (itemIndex !== -1) {
-                const updatedItems = [...state.orderItems];
-                updatedItems[itemIndex].quantity += action.orderItem.quantity;
-                return {
-                    ...state,
-                    orderItems: updatedItems,
-                }
-            } else {
-                return {
-                    ...state,
-                    orderItems: [...state.orderItems, action.orderItem],
-                }
-            }
-        }
-        case"REMOVE_FROM_ORDER": {
+        case "CLEAR_DELIVERY_ADDRESS":
+            removeFromSessionStorage("deliveryAddress");
             return {
                 ...state,
-                orderItems: state.orderItems.filter((item) => item !== action.orderItem),
+                deliveryAddress: "",
             }
+        case "CLEAR_FORM_DATA":
+            removeFromSessionStorage("deliveryOption");
+            removeFromSessionStorage("tableNumber");
+            removeFromSessionStorage("deliveryAddress");
+            return {
+                ...state,
+                deliveryOption: "",
+                tableNumber: "",
+                deliveryAddress: "",
+            };
+        case "ADD_TO_ORDER": {
+            const itemIndex = state.orderItems.findIndex(
+                (item) =>
+                    item.name === action.orderItem.name &&
+                    JSON.stringify(item.selectedAddOns) === JSON.stringify(action.orderItem.selectedAddOns)
+            );
+
+            let updatedItems;
+            if (itemIndex !== -1) {
+                updatedItems = [...state.orderItems];
+                updatedItems[itemIndex].quantity += action.orderItem.quantity;
+            } else {
+                updatedItems = [...state.orderItems, action.orderItem];
+            }
+
+            saveOrderItemsToSessionStorage(updatedItems);
+            return {
+                ...state,
+                orderItems: updatedItems,
+            };
+        }
+        case "REMOVE_FROM_ORDER": {
+            const updatedItems = state.orderItems.filter((item) => item !== action.orderItem);
+            saveOrderItemsToSessionStorage(updatedItems);
+            return {
+                ...state,
+                orderItems: updatedItems,
+            };
         }
         case "UPDATE_PRODUCT_QUANTITY": {
             const updatedItems = state.orderItems.map((item, index) => {
@@ -75,6 +118,7 @@ function reducer(state, action) {
                 }
                 return item;
             });
+            saveOrderItemsToSessionStorage(updatedItems);
 
             return {
                 ...state,
@@ -97,6 +141,7 @@ function reducer(state, action) {
                 return item;
             });
 
+            saveOrderItemsToSessionStorage(updatedItems);
             return {
                 ...state,
                 orderItems: updatedItems,
@@ -104,6 +149,7 @@ function reducer(state, action) {
         }
 
         case "CLEAR_ORDER":
+            sessionStorage.removeItem("orderItems")
             return {
                 ...state,
                 orderItems: [],

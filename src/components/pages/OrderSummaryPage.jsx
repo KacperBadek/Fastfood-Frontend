@@ -2,15 +2,12 @@ import {useContext, useMemo} from "react";
 import {GlobalContext} from "../../GlobalContext.jsx";
 import {useNavigate} from "react-router-dom";
 import OrderProduct from "../OrderProduct.jsx";
-import {getSessionInfo} from "../../http/session.jsx"
 import {useSessionUtils} from "../../utils/SessionUtils.jsx"
-import {createOrderObject} from "../../utils/OrderUtils";
-import {createOrder} from "../../http/api.jsx";
 
 export default function OrderSummaryPage() {
     const {state} = useContext(GlobalContext);
-    const {restartSession} = useSessionUtils();
-    const {orderItems, deliveryOption, tableNumber, deliveryAddress} = state;
+    const {restartSessionWithNavigate} = useSessionUtils();
+    const {orderItems} = state;
     const navigate = useNavigate();
 
     const countTotalPrice = useMemo(() => {
@@ -18,29 +15,15 @@ export default function OrderSummaryPage() {
     }, [orderItems]);
 
     const handleConfirmOrder = async () => {
-        getSessionInfo().then((response) => {
-            console.log(response)
-        })
-
-        const newOrder = createOrderObject({
-            deliveryOption,
-            deliveryAddress,
-            tableNumber,
-            orderItems,
-        });
-
-        console.log(newOrder);
-
         try {
-            await createOrder(newOrder);
             navigate("/payment");
         } catch (error) {
             console.log("Error submitting order:", error);
         }
     };
 
-    const handleStartOver = () => {
-        restartSession();
+    const handleStartOver = async () => {
+        await restartSessionWithNavigate();
     }
 
     return (
