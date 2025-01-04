@@ -1,3 +1,10 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export const prepareItems = (orderItems) => {
     return orderItems.map(({name, selectedAddOns, quantity}) => ({
         productName: name,
@@ -16,7 +23,7 @@ export const createOrderObject = ({
                                       orderItems
                                   }) => {
     const currentDate = new Date();
-    const orderTime = currentDate.toISOString().split(".")[0];
+    const orderTime = dayjs(currentDate).tz("Europe/Warsaw").format("YYYY-MM-DDTHH:mm:ss");
 
     return {
         items: prepareItems(orderItems),
