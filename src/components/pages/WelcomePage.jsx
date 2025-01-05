@@ -65,18 +65,22 @@ export default function WelcomePage() {
     }
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold">Welcome to our restaurant!</h1>
-            <div>
-                <h2>Where will you eat today?</h2>
-                <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.DINE_IN)} text="Dine in"/>
-                <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.TAKEOUT)} text="Takeout"/>
-                <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.DELIVERY)} text="Delivery"/>
+        <div className="flex flex-row min-h-96 justify-center items-center">
+            <div className="text-center">
+                <h1 className="text-3xl font-bold pb-4">Welcome to our restaurant!</h1>
+                <div>
+                    <h2 className="text-xl font-semibold pb-8">Where will you eat today?</h2>
+                    <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.DINE_IN)} text="Dine in"/>
+                    <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.TAKEOUT)} text="Takeout"/>
+                    <DeliveryOptionButton handler={() => handleDeliveryOption(DeliveryOptions.DELIVERY)}
+                                          text="Delivery"/>
+                </div>
+                {showForm && (
+                    <DeliveryOptionForm deliveryOptions={DeliveryOptions} deliveryOption={deliveryOption}
+                                        onSubmit={handleSubmit}/>
+                )}
             </div>
-            {showForm && (
-                <DeliveryOptionForm deliveryOptions={DeliveryOptions} deliveryOption={deliveryOption}
-                                    onSubmit={handleSubmit}/>
-            )}
+
         </div>
     )
 }

@@ -3,7 +3,7 @@ export default function OrderConfirmation({orderDetails}) {
         <div>
             <p><strong>Order Number:</strong> {orderDetails.orderNumber}</p>
             <p><strong>Status:</strong> {orderDetails.status}</p>
-            <p><strong>Total Price:</strong> {orderDetails.totalPrice}</p>
+            <p><strong>Total Price:</strong> {orderDetails.totalPrice}$</p>
             <p><strong>Delivery Option:</strong> {orderDetails.deliveryOption}</p>
             {orderDetails.deliveryOption === "DELIVERY" && (
                 <p><strong>Delivery Address:</strong> {orderDetails.deliveryAddress}</p>

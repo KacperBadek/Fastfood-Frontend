@@ -2,10 +2,10 @@ import {ErrorMessage, Field} from "formik";
 
 export default function InputFieldFormik({label, name, type, options, handleFocus}) {
     return (
-        <div>
-            <label htmlFor={name}>{label}</label>
+        <div className="mb-4">
+            <label htmlFor={name} className="block font-medium mb-1">{label}</label>
             {type === "select" ? (
-                <Field as="select" name={name}>
+                <Field as="select" name={name} className="w-56 px-1 py-1 rounded">
                     <option value="" disabled>Choose option</option>
                     {options.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -14,7 +14,7 @@ export default function InputFieldFormik({label, name, type, options, handleFocu
                     ))}
                 </Field>
             ) : (
-                <Field name={name} type={type} onFocus={handleFocus}/>
+                <Field name={name} type={type} onFocus={handleFocus} placeholder={name} className="w-64 px-1 py-1 rounded"/>
             )}
             <ErrorMessage name={name} component="div" className="error"/>
         </div>

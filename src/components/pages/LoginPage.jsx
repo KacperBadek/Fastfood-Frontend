@@ -36,27 +36,30 @@ export default function LoginPage() {
     }
 
     return (
-        <div>
-            <Formik
-                initialValues={{
-                    email: "",
-                    password: ""
-                }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-            >
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="w-full max-w-md p-8 bg-gray-600 rounded shadow-md">
+                <Formik
+                    initialValues={{
+                        email: "",
+                        password: ""
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                >
 
-                {() => (
-                    <Form>
-                        <h1>Login</h1>
-                        <InputFieldFormik name="email" label="Email" type="text" handleFocus={() => setErrorMessage("")}/>
-                        <InputFieldFormik name="password" label="Password" type="password" handleFocus={() => setErrorMessage("")}/>
-                        {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+                    {() => (
+                        <Form className="space-y-6">
+                            <h1 className="text-4xl text-center mb-4">Login</h1>
+                            <InputFieldFormik name="email" label="Email" type="text" handleFocus={() => setErrorMessage("")}/>
+                            <InputFieldFormik name="password" label="Password" type="password" handleFocus={() => setErrorMessage("")}/>
+                            {errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
-                        <button type="submit">Login</button>
-                    </Form>
-                )}
-            </Formik>
+                            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</button>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+
         </div>
     )
 }

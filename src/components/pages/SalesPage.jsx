@@ -34,49 +34,51 @@ export default function SalesPage() {
         }
     }
 
-    if (errorMessage) return <div>{errorMessage}</div>;
-    if (!salesData) return <div>Loading...</div>;
+    if (errorMessage) return <div className="text-center text-lg font-semibold text-red-600 py-10">{errorMessage}</div>;
+    if (!salesData) return <div className="text-center text-lg font-medium py-10">Loading...</div>;
 
     return (
-        <div>
-            <h1>Sales Report</h1>
-            <div>
-                <p>
-                    <strong>Total Orders:</strong> {salesData.totalOrders}
-                </p>
-                <p>
-                    <strong>Total Revenue:</strong> {salesData.totalRevenue.toFixed(2)}$
-                </p>
+        <div className="max-w-2xl mx-auto p-6 ">
+            <div className="rounded-lg shadow-md">
+                <h1 className="text-4xl text-center mb-6">Sales Report</h1>
+                <div className="space-y-4 text-left">
+                    <p className="text-xl">
+                        <strong>Total Orders:</strong> {salesData.totalOrders}
+                    </p>
+                    <p className="text-xl">
+                        <strong>Total Revenue:</strong> {salesData.totalRevenue.toFixed(2)}$
+                    </p>
 
-                <h2>Orders by Status</h2>
-                {Object.keys(salesData.ordersByStatus).length > 0 ? (
-                    <ul>
-                        {Object.entries(salesData.ordersByStatus).map(([status, count]) => (
-                            <li key={status}>
-                                {status}: {count}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No orders</p>
-                )}
+                    <h2 className="text-xl mt-8">Orders by Status:</h2>
+                    {Object.keys(salesData.ordersByStatus).length > 0 ? (
+                        <ul className="list-disc pl-6">
+                            {Object.entries(salesData.ordersByStatus).map(([status, count]) => (
+                                <li key={status} className="text-sm">
+                                    {status}: {count}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-sm">No orders</p>
+                    )}
 
-                <h2>Orders by Delivery Option</h2>
-                {Object.keys(salesData.ordersByDeliveryOption).length > 0 ? (
-                    <ul>
-                        {Object.entries(salesData.ordersByDeliveryOption).map(([option, count]) => (
-                            <li key={option}>
-                                {option}: {count}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No orders</p>
-                )}
+                    <h2 className="text-xl mt-8">Orders by Delivery Option:</h2>
+                    {Object.keys(salesData.ordersByDeliveryOption).length > 0 ? (
+                        <ul className="list-disc pl-6">
+                            {Object.entries(salesData.ordersByDeliveryOption).map(([option, count]) => (
+                                <li key={option} className="text-sm">
+                                    {option}: {count}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-sm">No orders</p>
+                    )}
+                </div>
             </div>
-            <div>
-                <button onClick={handleLogout}>Logout</button>
-            </div>
+            <button onClick={handleLogout}
+                    className="bg-blue-500 text-white px-4 mt-6 rounded hover:bg-blue-600">Logout
+            </button>
         </div>
     );
 
