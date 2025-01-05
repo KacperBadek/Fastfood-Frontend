@@ -17,13 +17,14 @@ export default function WelcomePage() {
     const {deliveryOption} = state;
     const navigate = useNavigate();
 
-    const handleSession = () => {
-        startSession()
-            .then()
-            .catch((error) => {
-                console.log("Failed to start session", error)
-            })
-    }
+    const handleSession = async () => {
+        try {
+            await startSession();
+        } catch (error) {
+            console.log("Failed to start session", error);
+        }
+    };
+
 
     const handleDeliveryOption = (option) => {
         dispatch({
@@ -33,8 +34,9 @@ export default function WelcomePage() {
 
         if (option === DeliveryOptions.TAKEOUT) {
             dispatch({type: "CLEAR_TABLE_NUMBER"}, {type: "CLEAR_DELIVERY_ADDRESS"})
-            handleSession();
-            navigate("/menu");
+            handleSession().then(() => {
+                navigate("/menu");
+            });
         } else {
             setShowForm(true);
         }
@@ -57,8 +59,9 @@ export default function WelcomePage() {
         }
 
         setShowForm(false);
-        handleSession();
-        navigate("/menu");
+        handleSession().then(() => {
+            navigate("/menu");
+        });
     }
 
     return (

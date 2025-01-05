@@ -1,27 +1,51 @@
-import {useEffect} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import {useSessionUtils} from "./utils/SessionUtils.jsx"
+import {getSessionInfo} from "./http/session.jsx";
+import SessionExpiredModal from "./components/modals/SessionExpiredModal.jsx"
 
 //const SESSION_TIMEOUT = 5 * 1000;
-const SESSION_TIMEOUT = 5 * 60 * 1000;
-const exemptedRoutes = ['/', '/order-confirmation'];
+ const SESSION_TIMEOUT = 10 * 60 * 1000;
+const exemptedRoutes = ['/', '/order-confirmation', '/login'];
+
+async function isSessionActive() {
+    try {
+        const sessionInfo = await getSessionInfo();
+        return sessionInfo !== "No existing session.";
+    } catch (error) {
+        console.log("Error checking session status:", error);
+        return false;
+    }
+}
 
 export default function SessionManager({children}) {
     const navigate = useNavigate();
     const location = useLocation();
-    const {restartSessionWithNavigate} = useSessionUtils();
+    const {restartSessionWithNavigate, restartSession} = useSessionUtils();
+    const [sessionModal, setSessionModal] = useState(false);
+
+    const toggleSessionModal = useCallback(() => {
+        setSessionModal((prev) => !prev);
+    }, [])
 
     useEffect(() => {
-        if (exemptedRoutes.includes(location.pathname)) return;
+        if (exemptedRoutes.includes(location.pathname)) {
+            console.log(`Exempted route detected: ${location.pathname}`);
+            return;
+        }
+
+        console.log(`SessionManager active on: ${location.pathname}`);
 
         let sessionTimeout;
-
         const resetSessionTimeout = () => {
             clearTimeout(sessionTimeout);
 
-            sessionTimeout = setTimeout(async () => {
-                alert("Session expired.");
-                await restartSessionWithNavigate();
+            sessionTimeout = setTimeout(() => {
+                console.log("Session timeout");
+
+                restartSessionWithNavigate().then(() => {
+                    toggleSessionModal();
+                });
             }, SESSION_TIMEOUT);
         };
 
@@ -29,10 +53,23 @@ export default function SessionManager({children}) {
             resetSessionTimeout();
         };
 
+        const checkSession = () => {
+            isSessionActive().then((session) => {
+                if (!session) {
+                    restartSessionWithNavigate().then(() => {
+                        toggleSessionModal();
+                    })
+                }
+            })
+        }
+
         window.addEventListener("mousemove", handleActivity);
         window.addEventListener("click", handleActivity);
         window.addEventListener("scroll", handleActivity);
         window.addEventListener("keydown", handleActivity);
+
+        resetSessionTimeout();
+        checkSession();
 
         return () => {
             window.removeEventListener("mousemove", handleActivity);
@@ -41,7 +78,12 @@ export default function SessionManager({children}) {
             window.removeEventListener("keydown", handleActivity);
             clearTimeout(sessionTimeout);
         };
-    }, [navigate, location.pathname]);
+    }, [location.pathname, navigate]);
 
-    return children;
+    return (
+        <>
+            {children}
+            {sessionModal && <SessionExpiredModal message="Session has expired." toggleModal={toggleSessionModal}/>}
+        </>
+    );
 }

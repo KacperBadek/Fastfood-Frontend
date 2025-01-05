@@ -1,4 +1,7 @@
+import {useNavigate} from "react-router-dom";
+
 export default function Sidebar({categories, selectedType, onTypeSelect}) {
+    const navigate = useNavigate();
     return (
         <div className="border-r border-gray-200 pr-4 w-1/3">
             <ul className="space-y-2">
@@ -28,6 +31,14 @@ export default function Sidebar({categories, selectedType, onTypeSelect}) {
                         </button>
                     </li>
                 ))}
+                <li>
+                    <button
+                        className={`w-full text-left p-2 rounded hover:bg-gray-500`}
+                        onClick={() => navigate("/login")}
+                    >
+                        LOGIN
+                    </button>
+                </li>
             </ul>
         </div>
     );

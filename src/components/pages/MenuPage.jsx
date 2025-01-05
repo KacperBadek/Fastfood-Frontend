@@ -46,6 +46,7 @@ export default function MenuPage() {
             </div>
 
             {productModal && (<ProductModal product={selectedProduct} toggleModal={toggleProductModal}/>)}
+            <button onClick={() => navigate("/")}>Go back</button>
             <button onClick={() => navigate("/order")}>Go to your order</button>
 
         </div>
