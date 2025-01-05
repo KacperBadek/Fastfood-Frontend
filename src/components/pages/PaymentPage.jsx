@@ -58,7 +58,9 @@ export default function PaymentPage() {
             resetForm();
             navigate("/order-confirmation")
         } catch (error) {
-            console.log("Payment error", error)
+            if (error.response && error.response.status === 403) {
+                await restartSessionWithNavigate();
+            }
             setErrorMessage("Oops, there was an error. Try again later.");
         }
     }

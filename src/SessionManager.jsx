@@ -1,23 +1,27 @@
 import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
+import {useSessionUtils} from "./utils/SessionUtils.jsx"
 
-// const SESSION_TIMEOUT = 15 * 60 * 1000;
-const SESSION_TIMEOUT = 10 * 1000;
+//const SESSION_TIMEOUT = 5 * 1000;
+const SESSION_TIMEOUT = 5 * 60 * 1000;
+const exemptedRoutes = ['/', '/order-confirmation'];
 
-export default function SessionManager() {
+export default function SessionManager({children}) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const {restartSessionWithNavigate} = useSessionUtils();
 
     useEffect(() => {
-        console.log("SessionManager initialized for sessionId:", document.cookie);
+        if (exemptedRoutes.includes(location.pathname)) return;
+
         let sessionTimeout;
 
         const resetSessionTimeout = () => {
             clearTimeout(sessionTimeout);
 
-            sessionTimeout = setTimeout(() => {
+            sessionTimeout = setTimeout(async () => {
                 alert("Session expired.");
-                sessionStorage.removeItem("sessionId");
-                navigate("/");
+                await restartSessionWithNavigate();
             }, SESSION_TIMEOUT);
         };
 
@@ -37,7 +41,7 @@ export default function SessionManager() {
             window.removeEventListener("keydown", handleActivity);
             clearTimeout(sessionTimeout);
         };
-    }, [navigate]);
+    }, [navigate, location.pathname]);
 
-    return null;
+    return children;
 }
