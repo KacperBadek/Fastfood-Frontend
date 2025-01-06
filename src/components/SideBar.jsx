@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 export default function Sidebar({categories, selectedType, onTypeSelect}) {
     const navigate = useNavigate();
     return (
-        <div className="border-r border-gray-200 pr-4 w-1/3">
+        <div className="border-r border-gray-200 pr-2 w-1/3 pl-8">
             <ul className="space-y-2">
                 <li>
                     <button

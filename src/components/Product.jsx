@@ -6,7 +6,7 @@ export default function Product({productData}) {
             <img
                 src={image}
                 alt="photo"
-                className="w-40 h-40 object-cover rounded-md mb-4 mx-auto"
+                className="w-max h-40 object-cover rounded-md mb-4 mx-auto"
             />
             <h2 className="text-lg font-semibold text-white">{name}</h2>
         </div>

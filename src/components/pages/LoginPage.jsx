@@ -48,13 +48,13 @@ export default function LoginPage() {
                 >
 
                     {() => (
-                        <Form className="space-y-6">
+                        <Form className="space-y-6 justify-center text-center">
                             <h1 className="text-4xl text-center mb-4">Login</h1>
                             <InputFieldFormik name="email" label="Email" type="text" handleFocus={() => setErrorMessage("")}/>
                             <InputFieldFormik name="password" label="Password" type="password" handleFocus={() => setErrorMessage("")}/>
                             {errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
-                            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</button>
+                            <button type="submit" className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Login</button>
                         </Form>
                     )}
                 </Formik>

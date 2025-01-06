@@ -1,6 +1,6 @@
 export default function OrderConfirmation({orderDetails}) {
     return (
-        <div>
+        <div className="space-y-4">
             <p><strong>Order Number:</strong> {orderDetails.orderNumber}</p>
             <p><strong>Status:</strong> {orderDetails.status}</p>
             <p><strong>Total Price:</strong> {orderDetails.totalPrice}$</p>

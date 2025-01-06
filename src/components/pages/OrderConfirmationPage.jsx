@@ -37,13 +37,19 @@ export default function OrderConfirmationPage() {
     if (!orderDetails) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div className="max-w-2xl mx-auto p-6 border rounded-lg shadow-md space-y-6">
             <h1>Order Confirmation</h1>
             <div ref={contentRef}>
                 <OrderConfirmation orderDetails={orderDetails}/>
             </div>
-            <button onClick={reactToPrintFn} disabled={!orderDetails}>Print Order</button>
-            <button onClick={handleFinish}>Finish</button>
+            <div>
+                <button onClick={reactToPrintFn} disabled={!orderDetails}
+                        className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Print Order
+                </button>
+                <button onClick={handleFinish} className="bg-red-600 mx-2 text-white rounded hover:bg-red-700">Finish
+                </button>
+            </div>
+
         </div>
     );
 }

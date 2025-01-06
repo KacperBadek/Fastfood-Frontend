@@ -76,8 +76,8 @@ export default function PaymentPage() {
     if (errorMessage) return <div>{errorMessage}</div>;
 
     return (
-        <div>
-            <h1>Payment</h1>
+        <div className="text-center justify-center items-center">
+            <h1 className="pb-3">Payment</h1>
             <Formik
                 initialValues={{
                     category: "",
@@ -89,7 +89,7 @@ export default function PaymentPage() {
 
                 {({values}) => (
                     <Form>
-                        <InputFieldFormik name="category" label="Type" type="select"
+                        <InputFieldFormik name="category" label="" type="select"
                                           options={paymentOptions}/>
 
                         {values.category === "CREDIT_CARD" && (
@@ -97,11 +97,11 @@ export default function PaymentPage() {
                         )}
 
                         {values.category === "BLIK" && (
-                            <InputFieldFormik name="blikNumber" label="Blik Number" type="text"/>
+                            <InputFieldFormik name="blikCode" label="Blik Code" type="text"/>
                         )}
 
-                        <button type="Submit">Confirm</button>
-                        <button type="button" onClick={handleCancel}>Cancel Order</button>
+                        <button type="Submit" className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Confirm</button>
+                        <button type="button" onClick={handleCancel} className="bg-red-600 mx-2 text-white rounded hover:bg-red-700">Cancel Order</button>
                     </Form>
                 )}
             </Formik>

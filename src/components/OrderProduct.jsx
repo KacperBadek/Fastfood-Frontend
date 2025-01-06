@@ -42,7 +42,6 @@ export default function OrderProduct({index, product}) {
         <>
             <div>
                 <strong>{product.name}</strong>
-                Quantity:
                 <input
                     type="number"
                     value={product.quantity}

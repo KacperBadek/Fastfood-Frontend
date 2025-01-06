@@ -8,7 +8,7 @@ import ProductModal from "../modals/ProductModal.jsx";
 export default function MenuPage() {
 
     const {state} = useContext(GlobalContext);
-    const {products, menuCategories} = state;
+    const {products, menuCategories, orderItems} = state;
     const [selectedType, setSelectedType] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [productModal, setProductModal] = useState(false);
@@ -25,12 +25,12 @@ export default function MenuPage() {
         : products;
 
     return (
-        <div className="">
-            <h1>Menu</h1>
+        <div className="text-center p-4">
+            <h1 className="p-8">Menu</h1>
 
             <div className="flex">
                 <Sidebar categories={menuCategories} selectedType={selectedType} onTypeSelect={setSelectedType}/>
-                <div className="w-2/3 pl-4">
+                <div className="w-2/3 ml-8">
                     {products.length === 0 ? (
                         <p>No products available.</p>
                     ) : (
@@ -46,9 +46,12 @@ export default function MenuPage() {
             </div>
 
             {productModal && (<ProductModal product={selectedProduct} toggleModal={toggleProductModal}/>)}
-            <button onClick={() => navigate("/")}>Go back</button>
-            <button onClick={() => navigate("/order")}>Go to your order</button>
-
+            <div className="my-8">
+                <button onClick={() => navigate("/")}>Go back</button>
+                {orderItems.length > 0 && <button onClick={() => navigate("/order")}
+                                                  className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Go
+                    to your order</button>}
+            </div>
         </div>
     )
 }

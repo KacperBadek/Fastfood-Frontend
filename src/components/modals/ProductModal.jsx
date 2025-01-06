@@ -33,6 +33,7 @@ export default function ProductModal({product, toggleModal}) {
         } else {
             finalizeOrder(product, personalizedAddOns, quantity, calculateTotalPrice, dispatch);
         }
+        toggleModal();
     };
 
     useEffect(() => {

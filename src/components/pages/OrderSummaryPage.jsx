@@ -45,7 +45,8 @@ export default function OrderSummaryPage() {
                 Total price: {countTotalPrice}$
             </div>
 
-            <button onClick={handleConfirmOrder}>Confirm order</button>
+            <button onClick={() => navigate("/menu")}>Go back</button>
+            {orderItems.length > 0 && <button onClick={handleConfirmOrder}>Confirm order</button>}
             <button onClick={handleStartOver}>Start over</button>
         </div>
     )

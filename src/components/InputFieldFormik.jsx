@@ -14,7 +14,7 @@ export default function InputFieldFormik({label, name, type, options, handleFocu
                     ))}
                 </Field>
             ) : (
-                <Field name={name} type={type} onFocus={handleFocus} placeholder={name} className="w-64 px-1 py-1 rounded"/>
+                <Field name={name} type={type} onFocus={handleFocus} placeholder={label.toLowerCase()} className="w-64 px-1 py-1 rounded"/>
             )}
             <ErrorMessage name={name} component="div" className="error"/>
         </div>
