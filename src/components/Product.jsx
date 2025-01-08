@@ -1,5 +1,5 @@
 export default function Product({productData}) {
-    const {name, image, description, price,} = productData;
+    const {name, image} = productData;
 
     return (
         <div className="border border-gray-300 rounded-lg p-8 shadow-sm hover:cursor-pointer">

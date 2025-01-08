@@ -32,7 +32,7 @@ export default function MenuPage() {
                 <Sidebar categories={menuCategories} selectedType={selectedType} onTypeSelect={setSelectedType}/>
                 <div className="w-2/3 ml-8">
                     {products.length === 0 ? (
-                        <p>No products available.</p>
+                        <p className="text-center">No products available.</p>
                     ) : (
                         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredProducts.map((product, index) => (

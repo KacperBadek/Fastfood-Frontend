@@ -27,27 +27,30 @@ export default function OrderSummaryPage() {
     }
 
     return (
-        <div>
-            <h1>Order Summary</h1>
+        <div className="p-6 space-y-6 text-center">
+            <h1 className="text-4xl font-bold text-center">Order Summary</h1>
             {orderItems.length === 0 ? (
-                <p>No items in your order.</p>
+                <p className="text-center">No items in your order.</p>
             ) : (
                 <ul>
                     {orderItems.map((item, index) => (
-                        <li key={index}>
+                        <li key={index} className="items-center justify-center">
                             <OrderProduct index={index} product={item}/>
                         </li>
                     ))}
                 </ul>
             )}
 
-            <div>
+            <div className="text-lg font-semibold text-center">
                 Total price: {countTotalPrice}$
             </div>
 
-            <button onClick={() => navigate("/menu")}>Go back</button>
-            {orderItems.length > 0 && <button onClick={handleConfirmOrder}>Confirm order</button>}
-            <button onClick={handleStartOver}>Start over</button>
+            <div className="flex space-x-2 items-center justify-center">
+                <button onClick={() => navigate("/menu")}>Go back</button>
+                {orderItems.length > 0 && <button onClick={handleConfirmOrder} className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Confirm order</button>}
+                <button onClick={handleStartOver} className="bg-red-600 mx-2 text-white rounded hover:bg-red-700">Start over</button>
+            </div>
+
         </div>
     )
 }

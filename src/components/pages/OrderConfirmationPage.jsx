@@ -33,7 +33,7 @@ export default function OrderConfirmationPage() {
         restart();
     }, []);
 
-    if (errorMessage) return <div>{errorMessage}</div>;
+    if (errorMessage) return <div className="text-center">{errorMessage}</div>;
     if (!orderDetails) return <div>Loading...</div>;
 
     return (

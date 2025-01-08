@@ -18,6 +18,5 @@ export const finalizeOrder = (product, selectedAddOns, quantity, calculateTotalP
         totalPrice: calculateTotalPrice(product.price, selectedAddOns, quantity),
     };
 
-    console.log(productWithPersonalization);
     dispatch({type: "ADD_TO_ORDER", orderItem: productWithPersonalization});
 };

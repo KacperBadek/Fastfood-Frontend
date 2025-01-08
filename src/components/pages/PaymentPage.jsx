@@ -50,7 +50,6 @@ export default function PaymentPage() {
             tableNumber,
             orderItems,
         });
-        console.log(newOrder);
 
         try {
             await createOrder(newOrder);
@@ -73,7 +72,7 @@ export default function PaymentPage() {
         }
     }
 
-    if (errorMessage) return <div>{errorMessage}</div>;
+    if (errorMessage) return <div className="text-center">{errorMessage}</div>;
 
     return (
         <div className="text-center justify-center items-center">

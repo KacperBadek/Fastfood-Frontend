@@ -40,17 +40,26 @@ export default function OrderProduct({index, product}) {
 
     return (
         <>
-            <div>
-                <strong>{product.name}</strong>
-                <input
-                    type="number"
-                    value={product.quantity}
-                    onChange={(e) => handleQuantityUpdate(e.target.value)}
-                />
-                <p>Price: ${product.totalPrice.toFixed(2)}</p>
-                <button onClick={togglePersonalization}>Personalise</button>
-                <button onClick={toggleDetailsModal}>Info</button>
-                <button onClick={() => handleRemoveItem(product)}>Remove</button>
+            <div className="max-w-xl mx-auto mt-4 space-y-4 space-x-8 flex items-center justify-center border border-gray-300 rounded-lg">
+                <div className="text-center max-w-xs">
+                    <img src={product.image} alt="image" className="object-contain w-full h-40 max-w-32 mt-4"/>
+                    <strong>{product.name}</strong>
+                </div>
+                <div className="flex flex-col items-center space-y-2">
+                    <input
+                        type="number"
+                        value={product.quantity}
+                        onChange={(e) => handleQuantityUpdate(e.target.value)}
+                        className="w-16 p-1 rounded-md text-center"
+                    />
+                    <p>Price: ${product.totalPrice.toFixed(2)}</p>
+                </div>
+
+                <div className="flex flex-col space-y-2">
+                    <button onClick={togglePersonalization}>Personalise</button>
+                    <button onClick={toggleDetailsModal}>Info</button>
+                    <button onClick={() => handleRemoveItem(product)}>Remove</button>
+                </div>
             </div>
 
             {detailsModal && (<ProductDetailsModal product={product} toggleModal={toggleDetailsModal}/>)}

@@ -33,6 +33,7 @@ body.active-modal {
     border-radius: 3px;
     max-width: 600px;
     min-width: 300px;
+    text-align: center;
 }
 
 .close-modal {

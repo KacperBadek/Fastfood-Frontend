@@ -5,7 +5,7 @@ import {getSessionInfo} from "./http/session.jsx";
 import SessionExpiredModal from "./components/modals/SessionExpiredModal.jsx"
 
 //const SESSION_TIMEOUT = 5 * 1000;
- const SESSION_TIMEOUT = 10 * 60 * 1000;
+const SESSION_TIMEOUT = 10 * 60 * 1000;
 const exemptedRoutes = ['/', '/order-confirmation', '/login'];
 
 async function isSessionActive() {
@@ -30,11 +30,8 @@ export default function SessionManager({children}) {
 
     useEffect(() => {
         if (exemptedRoutes.includes(location.pathname)) {
-            console.log(`Exempted route detected: ${location.pathname}`);
             return;
         }
-
-        console.log(`SessionManager active on: ${location.pathname}`);
 
         let sessionTimeout;
         const resetSessionTimeout = () => {
