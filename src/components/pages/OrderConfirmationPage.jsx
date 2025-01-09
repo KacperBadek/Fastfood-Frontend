@@ -29,8 +29,9 @@ export default function OrderConfirmationPage() {
         const restart = async () => {
             await restartSession();
         }
-        fetchData();
-        restart();
+        fetchData().then(() => {
+            restart();
+        });
     }, []);
 
     if (errorMessage) return <div className="text-center">{errorMessage}</div>;
