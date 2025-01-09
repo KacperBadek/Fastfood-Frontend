@@ -99,8 +99,12 @@ export default function PaymentPage() {
                             <InputFieldFormik name="blikCode" label="Blik Code" type="text"/>
                         )}
 
-                        <button type="Submit" className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Confirm</button>
-                        <button type="button" onClick={handleCancel} className="bg-red-600 mx-2 text-white rounded hover:bg-red-700">Cancel Order</button>
+                        <button type="Submit"
+                                className="bg-blue-600 mx-2 text-white rounded hover:bg-blue-700">Confirm
+                        </button>
+                        <button type="button" onClick={handleCancel}
+                                className="bg-red-600 mx-2 text-white rounded hover:bg-red-700">Cancel Order
+                        </button>
                     </Form>
                 )}
             </Formik>

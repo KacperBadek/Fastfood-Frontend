@@ -14,10 +14,6 @@ export async function createOrder(newOrder) {
     return await axios.post(API_URL + "/orders/create", newOrder, {withCredentials: true});
 }
 
-export async function cancelOrder() {
-    return await axios.put(API_URL + `/orders/cancel`, {}, {withCredentials: true});
-}
-
 export async function generatePayment(paymentData) {
     return await axios.post(API_URL + "/payments", paymentData, {withCredentials: true});
 }
